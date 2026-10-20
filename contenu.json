@@ -1,0 +1,6 @@
+{
+  "_aide": "Modifie ce fichier avec l'éditeur du site (editeur-du-site.html), puis remets-le dans le dossier du site et dépose le dossier sur Netlify (Déploie).",
+  "annonce": { "afficher": true, "texte": "", "lien": "", "lienTexte": "" },
+  "nouveautes": { "actif": false, "id": "", "titre": "", "texte": "", "lien": "", "lienTexte": "" },
+  "avis": []
+}
