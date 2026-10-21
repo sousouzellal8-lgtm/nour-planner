@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Bienvenue · Nour Planner</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;padding:32px 20px 48px;background:#0a0a0b;color:#f3e7c4;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  main{max-width:560px;margin:0 auto}
+  h1{font:500 30px/1.25 Georgia,"Times New Roman",serif;margin:0 0 8px}
+  .lead{margin:0 0 24px;color:#c9c3b6}
+  .go{display:inline-block;padding:14px 28px;border-radius:999px;background:#d8b25a;color:#0a0a0b;text-decoration:none;font-weight:700;font-size:16px;margin:0 0 28px}
+  h2{font:600 18px/1.3 Georgia,"Times New Roman",serif;margin:0 0 12px;color:#d8b25a}
+  details{border:1px solid rgba(216,178,90,.28);border-radius:14px;background:#121214;margin:0 0 10px;padding:0}
+  summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";float:right;color:#d8b25a}
+  details[open] summary::after{content:"–"}
+  details ol{margin:0;padding:0 18px 16px 38px;color:#d9d3c4}
+  details li{margin:6px 0}
+  .tag{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:rgba(216,178,90,.16);color:#d8b25a;font-size:12px;font-weight:600}
+  [hidden]{display:none!important}
+  .code-box{margin:26px 0 0;padding:16px;border:1px solid rgba(216,178,90,.4);border-radius:14px;background:#15151a}
+  .code-box p{margin:0 0 10px;color:#c9c3b6;font-size:14px}
+  .code{font:600 13px/1.5 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;color:#f3e7c4;user-select:all}
+  button{margin-top:12px;padding:10px 18px;border-radius:999px;border:1px solid rgba(216,178,90,.5);background:transparent;color:#f3e7c4;font:600 14px system-ui,sans-serif;cursor:pointer}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #d8b25a;outline-offset:3px}
+  .note{margin:22px 0 0;color:#a9a398;font-size:14px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Bienvenue sur Nour Planner</h1>
+  <p class="lead">Ton accès complet est prêt. Pour l'avoir toujours sous la main, installe-le sur ton écran d'accueil : il s'ouvre alors comme une vraie app, même sans internet.</p>
+  <a class="go" id="ouvrir" href="/app.html">Ouvrir mon planner</a>
+
+  <h2>Installer en 3 gestes</h2>
+  <details id="d-ios">
+    <summary>iPhone et iPad<span class="tag" id="t-ios" hidden>ton appareil</span></summary>
+    <ol>
+      <li>Ouvre Nour Planner dans <b>Safari</b>.</li>
+      <li>Touche le bouton <b>Partager</b> (le carré avec une flèche vers le haut).</li>
+      <li>Touche <b>« Sur l'écran d'accueil »</b>, puis <b>« Ajouter »</b>.</li>
+    </ol>
+  </details>
+  <details id="d-android">
+    <summary>Android<span class="tag" id="t-android" hidden>ton appareil</span></summary>
+    <ol>
+      <li>Ouvre Nour Planner dans <b>Chrome</b>.</li>
+      <li>Touche le menu <b>⋮</b> en haut à droite.</li>
+      <li>Touche <b>« Installer l'application »</b> (ou « Ajouter à l'écran d'accueil »).</li>
+    </ol>
+  </details>
+  <details id="d-mac">
+    <summary>Mac et ordinateur<span class="tag" id="t-mac" hidden>ton appareil</span></summary>
+    <ol>
+      <li><b>Chrome ou Edge :</b> clique sur l'icône d'installation à droite de la barre d'adresse, puis « Installer ».</li>
+      <li><b>Safari sur Mac :</b> menu <b>Fichier</b>, puis <b>« Ajouter au Dock »</b>.</li>
+    </ol>
+  </details>
+
+  <div class="code-box" id="box" hidden>
+    <p>Garde ton code d'accès. Si l'app installée te demande un code (c'est possible sur iPhone), colle-le dans la case d'un onglet verrouillé.</p>
+    <div class="code" id="code"></div>
+    <button type="button" id="copier">Copier mon code</button>
+  </div>
+  <p class="note">Un souci pour installer ou pour ouvrir l'app ? Reviens sur cette page, elle reste valable.</p>
+</main>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var code=new URLSearchParams(location.search).get('code')||'';
+  if(/^NOUR-[0-9A-Z-]{20,200}$/i.test(code)){
+    $('ouvrir').href='/app.html?code='+encodeURIComponent(code);
+    $('code').textContent=code;$('box').hidden=false;
+    $('copier').onclick=function(){
+      var b=this;
+      function ok(){b.textContent='Code copié ✓';setTimeout(function(){b.textContent='Copier mon code'},2200)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(ok,function(){})}
+      else{var t=document.createElement('textarea');t.value=code;document.body.appendChild(t);t.select();try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(t)}
+    };
+  }
+  var ua=navigator.userAgent||'',p=navigator.platform||'';
+  var d=/iPhone|iPad|iPod/.test(ua)||(p==='MacIntel'&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'android':'mac';
+  $('d-'+d).open=true;$('t-'+d).hidden=false;
+  var first=$('d-'+d),list=first.parentNode;list.insertBefore(first,list.querySelector('details'));
+})();
+</script>
+</body>
+</html>
