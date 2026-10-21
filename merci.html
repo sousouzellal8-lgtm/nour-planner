@@ -19,19 +19,49 @@
   .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   a{display:inline-block;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px}
   .gold{background:#d8b25a;color:#0a0a0b}
+  .code{font:600 15px/1.5 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;background:#15151a;border:1px solid rgba(216,178,90,.4);border-radius:12px;padding:14px;color:#f3e7c4;user-select:all}
   .ghost{border:1px solid rgba(216,178,90,.45);color:#f3e7c4}
 </style>
 </head>
 <body>
 <main>
-  <p class="n">✓</p>
-  <h1>Merci, ton paiement est bien reçu</h1>
-  <p>Ton code d'accès à Nour Planner t'est envoyé par e-mail, à l'adresse utilisée pour payer. Pense à regarder tes courriers indésirables.</p>
-  <p>Dès que tu as ton code, ouvre l'app, va sur un onglet verrouillé (Calendrier, Coran, Objectifs…) et colle-le dans la case prévue.</p>
-  <div class="row">
-    <a class="gold" href="/app.html">Ouvrir l'app</a>
+  <p class="n" id="ico">✓</p>
+  <h1 id="titre">Merci, ton paiement est bien reçu</h1>
+  <p id="msg">Nous ouvrons ton accès à Nour Planner…</p>
+  <p class="code" id="code" hidden></p>
+  <div class="row" id="actions">
+    <a class="gold" id="ouvrir" href="/app.html">Ouvrir l'app</a>
     <a class="ghost" href="/">Retour à l'accueil</a>
   </div>
 </main>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var sid=new URLSearchParams(location.search).get('session_id')||'';
+  function manuel(t){
+    $('titre').textContent='Merci, ton paiement est bien reçu';
+    $('msg').textContent=t||"Ton code d'accès t'est envoyé par e-mail, à l'adresse utilisée pour payer (regarde aussi tes courriers indésirables). Colle-le ensuite dans l'app, sur un onglet verrouillé.";
+  }
+  if(!/^cs_/.test(sid)){manuel();return}
+  fetch('/.netlify/functions/acces?session_id='+encodeURIComponent(sid),{cache:'no-store'})
+    .then(function(r){return r.json().catch(function(){return {ok:false}})})
+    .then(function(d){
+      if(d&&d.ok&&d.code){
+        var url='/app.html?code='+encodeURIComponent(d.code);
+        $('titre').textContent='Ton accès est prêt';
+        $('msg').textContent="Ton planner s'ouvre dans un instant, déjà débloqué. Garde ce code : il te servira si tu changes d'appareil.";
+        $('code').textContent=d.code;$('code').hidden=false;
+        $('ouvrir').href=url;$('ouvrir').textContent='Ouvrir mon planner';
+        setTimeout(function(){location.href=url},3500);
+      }else if(d&&d.raison==='non-paye'){
+        $('titre').textContent='Paiement non terminé';
+        $('msg').textContent="Stripe n'a pas encore confirmé ton paiement. Recharge cette page dans une minute. Si le problème continue, écris-nous avec l'e-mail utilisé pour payer.";
+      }else{
+        manuel("Ton paiement est bien reçu, mais l'ouverture automatique n'a pas marché. Pas d'inquiétude : ton code d'accès t'est envoyé par e-mail (regarde aussi tes courriers indésirables).");
+      }
+    })
+    .catch(function(){manuel("Ton paiement est bien reçu, mais l'ouverture automatique n'a pas marché. Ton code d'accès t'est envoyé par e-mail.")});
+})();
+</script>
 </body>
 </html>
