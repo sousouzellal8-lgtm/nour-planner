@@ -44,7 +44,7 @@ window.NOUR_CONFIG = {
   autresMoyens: [],
 
   /* Ton adresse e-mail de contact (affichée dans l'aide et la FAQ). */
-  email: "contact@exemple.com",
+  email: "nourplannere@gmail.com",
 
   /* Fichier de la liste des codes désactivés (voir LISEZ-MOI). */
   fichierCodesBloques: "codes-bloques.json",
