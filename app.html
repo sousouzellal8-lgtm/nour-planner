@@ -5750,9 +5750,10 @@ html[data-lite] body::after{display:none}
 
     <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .6s ease .2s both">
       <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Ajouter une séance</span>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <sc-for list="{{ spTypeChips }}" as="t" hint-placeholder-count="8"><button onClick="{{ t.go }}" style="border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }}">{{ t.label }}</button></sc-for>
-      </div>
+      <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#9A9488">Quel sport ?
+        <input value="{{ spType }}" onChange="{{ onSpType }}" onKeyDown="{{ onSpKey }}" maxlength="30" placeholder="Ex. Course à pied, boxe, natation…" style="background:#0E0E10;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;color:#EDE8DE;font-size:14px;outline:none"></input>
+      </label>
+      <sc-if value="{{ hasSpRecent }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span style="font-size:12px;color:#7d776b">Déjà fait :</span><sc-for list="{{ spTypeChips }}" as="t" hint-placeholder-count="0"><button type="button" onClick="{{ t.go }}" style="border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }}">{{ t.label }}</button></sc-for></div></sc-if>
       <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#9A9488">Durée
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
           <input type="number" inputmode="numeric" min="1" max="600" value="{{ spMin }}" onChange="{{ onSpMin }}" onKeyDown="{{ onSpKey }}" placeholder="Minutes" style="width:110px;background:#0E0E10;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;color:#EDE8DE;font-size:14px;outline:none"></input>
@@ -5969,7 +5970,7 @@ class Component extends DCLogic {
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(this.KEY)) || {}; } catch (e) {}
     const data = Object.assign({ name: '', city: 'Paris', country: 'France', etudiant: false, courses: {}, mosque: '', reciter: 'ar.alafasy', hifdh: {}, disp: 'both', tafId: 90, fullRec: '123', days: {}, adhkar: {}, quran: { log: {}, goal: 5, page: 1, khatmas: 0, surah: '' }, goals: [], finance: {}, favRec: {}, journal: [], jBlur: false, sport: { goal: 3, log: [] } }, saved);
-    return { ...data, lic: this.gateOn() ? (window.NourLicence && window.NourLicence.stored() ? 'full' : 'none') : 'full', licOpen: false, hOpen: {}, licDraft: '', licMsg: '', licBusy: false, intro: (this.props || {}).showIntro ?? false, editName: false, tab: (this.gateOn() && !(window.NourLicence && window.NourLicence.stored())) ? 'adhkar' : ((this.props || {}).defaultTab || 'cal'), sel: this.k(now), vy: now.getFullYear(), vm: now.getMonth(), times: null, timesKey: '', tmap: this.loadTimesCache(), timesErr: false, dAdhkar: now.getHours() >= 15 ? 'soir' : 'matin', tafsir: 0, fm: this.k(now).slice(0, 7), cel: null, celClosed: 0, nameDraft: data.name, cityDraft: data.city, countryDraft: data.country, newItem: { time: '', title: '', type: 'cours' }, newGoal: { mois: '', annee: '' }, newInc: { label: '', amount: '' }, newExp: { label: '', amount: '', cat: 'Alimentation' }, todoDraft: '', revDraft: '', moyenCopie: '', bonneDraft: '', course: { title: '', start: '', end: '' }, mosqueDraft: data.mosque, rs: 1, rData: null, rLoading: false, rErr: false, rTaf: null, tafAll: false, tafOpen: {}, playing: -1, showFr: true, sSearch: '', recList: [], fpOpen: false, fpPlaying: false, fpT: 0, fpD: 0, fpMsg: '', fpSurah: 1, memoMode: false, repeat: 3, hideText: false, revealed: {}, devoirDraft: '', fin: { mode: '', amount: '', cat: '', note: '', err: false }, rcpCat: {}, rcpQ: '', rcpTag: '', rcpFavOnly: false, rcpOpen: '', rcpSrv: 0, rcpChk: {}, rcpDone: {}, journal: Array.isArray(data.journal) ? data.journal.filter(e => e && typeof e.text === 'string') : [], jBlur: !!data.jBlur, jDraft: (data.jDraft && typeof data.jDraft === 'object') ? { title: String(data.jDraft.title || ''), text: String(data.jDraft.text || ''), mood: String(data.jDraft.mood || '') } : { title: '', text: '', mood: '' }, jEditId: 0, jOpen: {}, jQ: '', jFlash: '', sport: (data.sport && Array.isArray(data.sport.log)) ? { goal: Math.min(7, Math.max(1, +data.sport.goal || 3)), log: data.sport.log.filter(e => e && typeof e.d === 'string' && +e.min > 0) } : { goal: 3, log: [] }, spDraft: { type: 'Marche', min: '', note: '', date: '' }, spErr: '' };
+    return { ...data, lic: this.gateOn() ? (window.NourLicence && window.NourLicence.stored() ? 'full' : 'none') : 'full', licOpen: false, hOpen: {}, licDraft: '', licMsg: '', licBusy: false, intro: (this.props || {}).showIntro ?? false, editName: false, tab: (this.gateOn() && !(window.NourLicence && window.NourLicence.stored())) ? 'adhkar' : ((this.props || {}).defaultTab || 'cal'), sel: this.k(now), vy: now.getFullYear(), vm: now.getMonth(), times: null, timesKey: '', tmap: this.loadTimesCache(), timesErr: false, dAdhkar: now.getHours() >= 15 ? 'soir' : 'matin', tafsir: 0, fm: this.k(now).slice(0, 7), cel: null, celClosed: 0, nameDraft: data.name, cityDraft: data.city, countryDraft: data.country, newItem: { time: '', title: '', type: 'cours' }, newGoal: { mois: '', annee: '' }, newInc: { label: '', amount: '' }, newExp: { label: '', amount: '', cat: 'Alimentation' }, todoDraft: '', revDraft: '', moyenCopie: '', bonneDraft: '', course: { title: '', start: '', end: '' }, mosqueDraft: data.mosque, rs: 1, rData: null, rLoading: false, rErr: false, rTaf: null, tafAll: false, tafOpen: {}, playing: -1, showFr: true, sSearch: '', recList: [], fpOpen: false, fpPlaying: false, fpT: 0, fpD: 0, fpMsg: '', fpSurah: 1, memoMode: false, repeat: 3, hideText: false, revealed: {}, devoirDraft: '', fin: { mode: '', amount: '', cat: '', note: '', err: false }, rcpCat: {}, rcpQ: '', rcpTag: '', rcpFavOnly: false, rcpOpen: '', rcpSrv: 0, rcpChk: {}, rcpDone: {}, journal: Array.isArray(data.journal) ? data.journal.filter(e => e && typeof e.text === 'string') : [], jBlur: !!data.jBlur, jDraft: (data.jDraft && typeof data.jDraft === 'object') ? { title: String(data.jDraft.title || ''), text: String(data.jDraft.text || ''), mood: String(data.jDraft.mood || '') } : { title: '', text: '', mood: '' }, jEditId: 0, jOpen: {}, jQ: '', jFlash: '', sport: (data.sport && Array.isArray(data.sport.log)) ? { goal: Math.min(7, Math.max(1, +data.sport.goal || 3)), log: data.sport.log.filter(e => e && typeof e.d === 'string' && +e.min > 0) } : { goal: 3, log: [] }, spDraft: { type: '', min: '', note: '', date: '' }, spErr: '' };
   }
 
   // ───── Effets 3D & finitions : ciel étoilé, cartes à reflet, parallaxe, ondulations ─────
@@ -6878,30 +6879,31 @@ class Component extends DCLogic {
         copy: () => { const done = () => { this.setState({ moyenCopie: nom }); setTimeout(() => this.setState({ moyenCopie: '' }), 2000); }; try { navigator.clipboard.writeText(detail).then(done, () => {}); } catch (e) {} } };
     });
     // ───── Sport : séances et objectif de la semaine ─────
-    const SP_TYPES = ['Marche', 'Course', 'Musculation', 'Natation', 'Vélo', 'Foot', 'Yoga', 'Autre'];
     const sprt = (s.sport && Array.isArray(s.sport.log)) ? s.sport : { goal: 3, log: [] };
     const spGoal = Math.min(7, Math.max(1, +sprt.goal || 3));
-    const spd = s.spDraft || { type: 'Marche', min: '', note: '', date: '' };
+    const spd = s.spDraft || { type: '', min: '', note: '', date: '' };
     const spToday = this.k(now), spDate = spd.date || spToday;
     const setSp = patch => this.setState(st => ({ sport: { ...((st.sport && Array.isArray(st.sport.log)) ? st.sport : { goal: 3, log: [] }), ...(typeof patch === 'function' ? patch((st.sport && Array.isArray(st.sport.log)) ? st.sport : { goal: 3, log: [] }) : patch) } }));
-    const setSpd = patch => this.setState(st => ({ spDraft: { ...(st.spDraft || { type: 'Marche', min: '', note: '', date: '' }), ...patch }, spErr: '' }));
+    const setSpd = patch => this.setState(st => ({ spDraft: { ...(st.spDraft || { type: '', min: '', note: '', date: '' }), ...patch }, spErr: '' }));
     const spWk = new Date(now); spWk.setHours(0, 0, 0, 0); spWk.setDate(spWk.getDate() - ((spWk.getDay() + 6) % 7));
     const spDays = Array.from({ length: 7 }, (_, i) => { const dt = new Date(spWk); dt.setDate(spWk.getDate() + i); const key = this.k(dt); return { dt, key, list: sprt.log.filter(e => e.d === key) }; });
     const spDoneDays = spDays.filter(x => x.list.length).length;
     const spWeekMin = spDays.reduce((a, x) => a + x.list.reduce((b, e) => b + (+e.min || 0), 0), 0);
     const spFmtMin = m => m >= 60 ? Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + this.pad(m % 60) : '') : m + ' min';
     const spCells = spDays.map(x => { const done = x.list.length > 0, tod = x.key === spToday; return { label: x.dt.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '').slice(0, 3), day: x.dt.getDate(), check: done ? '✓' : '', bg: done ? T : '#161618', color: done ? '#0A0A0B' : '#9A9488', border: tod ? G : (done ? T : 'rgba(255,255,255,.06)') }; });
-    const spTypeChips = SP_TYPES.map(t => { const on = spd.type === t; return { label: t, bg: on ? G : '#18181b', color: on ? '#0A0A0B' : '#C9C3B6', border: on ? G : 'rgba(255,255,255,.08)', go: () => setSpd({ type: t }) }; });
+    const spRecent = []; [...sprt.log].sort((x, y) => y.id - x.id).forEach(e => { const t = String(e.type || '').trim(); if (t && !spRecent.some(r => r.toLowerCase() === t.toLowerCase()) && spRecent.length < 6) spRecent.push(t); });
+    const spTypeChips = spRecent.map(t => { const on = (spd.type || '').trim().toLowerCase() === t.toLowerCase(); return { label: t, bg: on ? G : '#18181b', color: on ? '#0A0A0B' : '#C9C3B6', border: on ? G : 'rgba(255,255,255,.08)', go: () => setSpd({ type: t }) }; });
     const spMinChips = [15, 30, 45, 60].map(m => { const on = String(spd.min) === String(m); return { label: m + ' min', bg: on ? 'oklch(0.8 0.11 85 / .14)' : '#18181b', color: on ? G : '#C9C3B6', border: on ? 'oklch(0.8 0.11 85 / .5)' : 'rgba(255,255,255,.08)', go: () => setSpd({ min: String(m) }) }; });
     const spAdd = () => {
       const min = Math.round(+spd.min);
+      if (!String(spd.type || '').trim()) { this.setState({ spErr: 'Écris quel sport tu as fait.' }); return; }
       if (!(min >= 1 && min <= 600)) { this.setState({ spErr: 'Indique la durée de ta séance, entre 1 et 600 minutes.' }); return; }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(spDate) || spDate > spToday) { this.setState({ spErr: 'Choisis une date qui n’est pas dans le futur.' }); return; }
       const before = new Set(sprt.log.filter(e => spDays.some(x => x.key === e.d)).map(e => e.d)).size;
       const inWeek = spDays.some(x => x.key === spDate);
       const after = inWeek ? new Set([...sprt.log.filter(e => spDays.some(x => x.key === e.d)).map(e => e.d), spDate]).size : before;
-      setSp(cur => ({ log: [...cur.log, { id: Date.now(), d: spDate, type: spd.type || 'Autre', min, note: String(spd.note || '').trim().slice(0, 200) }] }));
-      this.setState({ spDraft: { type: spd.type, min: '', note: '', date: '' }, spErr: '' });
+      setSp(cur => ({ log: [...cur.log, { id: Date.now(), d: spDate, type: String(spd.type).trim().slice(0, 30), min, note: String(spd.note || '').trim().slice(0, 200) }] }));
+      this.setState({ spDraft: { type: '', min: '', note: '', date: '' }, spErr: '' });
       if (before < spGoal && after >= spGoal) this.celebrate('Objectif de la semaine atteint', `${after} jours de sport cette semaine. Qu’Allah te garde fort et en bonne santé.`);
     };
     const spHist = [...sprt.log].sort((a, b) => (b.d < a.d ? -1 : b.d > a.d ? 1 : b.id - a.id)).slice(0, 40).map(e => { const dt = new Date(e.d + 'T12:00:00'); return { title: e.type, when: dt.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }), dur: spFmtMin(+e.min), note: e.note || '', hasNote: !!e.note, remove: () => { if (window.confirm('Supprimer cette séance ?')) setSp(cur => ({ log: cur.log.filter(x => x.id !== e.id) })); } }; });
@@ -6914,7 +6916,7 @@ class Component extends DCLogic {
       spWeekLabel: spDoneDays + ' / ' + spGoal + ' jour' + (spGoal > 1 ? 's' : ''), spPct: Math.min(100, spDoneDays / spGoal * 100) + '%', spCells,
       spGoal, spGoalMinus: () => setSp({ goal: Math.max(1, spGoal - 1) }), spGoalPlus: () => setSp({ goal: Math.min(7, spGoal + 1) }),
       spWeekMinLabel: spWeekMin ? spFmtMin(spWeekMin) : '0 min', spTotal: sprt.log.length, spTotalLabel: sprt.log.length + ' séance' + (sprt.log.length > 1 ? 's' : '') + ' au total',
-      spTypeChips, spMinChips, spMin: spd.min, onSpMin: e => setSpd({ min: e.target.value }), spNote: spd.note, onSpNote: e => setSpd({ note: e.target.value }),
+      spTypeChips, hasSpRecent: spTypeChips.length > 0, spType: spd.type, onSpType: e => setSpd({ type: e.target.value }), spMinChips, spMin: spd.min, onSpMin: e => setSpd({ min: e.target.value }), spNote: spd.note, onSpNote: e => setSpd({ note: e.target.value }),
       spDate, spToday, onSpDate: e => setSpd({ date: e.target.value }), spAdd, onSpKey: e => { if (e.key === 'Enter') spAdd(); },
       spErr: s.spErr || '', hasSpErr: !!s.spErr, spHist, spEmpty: !spHist.length, spShownLabel: sprt.log.length > 40 ? '40 dernières séances' : ''
     };
