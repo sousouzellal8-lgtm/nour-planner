@@ -5383,6 +5383,21 @@ html[data-lite] body::after{display:none}
         <button onClick="{{ addRev }}" style="background:oklch(0.8 0.11 85);color:#0A0A0B;border:none;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer">Ajouter</button>
       </div>
     </div>
+    <div style="grid-column:1/-1;background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .6s ease .4s both">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Mes sourates apprises</span><span style="font-family:Marcellus;font-size:22px;color:oklch(0.8 0.11 85)">{{ memoLabel }}</span></div>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:#9A9488">Coche chaque sourate quand tu l'as apprise par cœur. Tu peux la décocher à tout moment.</p>
+      <div style="height:6px;background:#1f1d18;border-radius:6px;overflow:hidden"><div style="height:100%;width:{{ memoPct }};background:linear-gradient(90deg,oklch(0.8 0.11 190),oklch(0.8 0.11 85));transition:width .6s"></div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;max-height:520px;overflow-y:auto;padding-right:4px">
+        <sc-for list="{{ memoItems }}" as="m" hint-placeholder-count="0">
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:#161618">
+            <button onClick="{{ m.toggle }}" aria-label="Marquer la sourate comme apprise" style="flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.5px solid {{ m.boxBorder }};background:{{ m.boxBg }};color:#0A0A0B;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">{{ m.check }}</button>
+            <span style="flex:0 0 34px;font-size:12px;color:#6f6a60">{{ m.n }}</span>
+            <span style="flex:1;min-width:0;font-size:14px;color:{{ m.color }}">{{ m.name }}</span>
+            <span style="font-size:12px;color:#6f6a60">{{ m.verses }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
   </div>
 </div>
 </sc-if>
@@ -6706,6 +6721,9 @@ class Component extends DCLogic {
     // Coran : révision du jour (liste de ce qu'il faut réviser aujourd'hui, à cocher)
     const revDay = this.k(new Date());
     const revs = ((s.days[revDay] || {}).revisions) || [];
+    const memoMap = q.memo || {}, memoDone = Object.keys(memoMap).filter(k => memoMap[k]).length;
+    const memoItems = (window.NOUR_SOURATES || []).map(r => { const on = !!memoMap[r[0]]; return { n: r[0], name: r[1] + ' · ' + r[2], verses: r[4] + ' v.', boxBg: on ? G : 'transparent', boxBorder: on ? G : '#4a463d', check: on ? '✓' : '', color: on ? '#7d776b' : '#EDE8DE',
+      toggle: () => { const was = !!memoMap[r[0]]; this.setQ(x => ({ memo: { ...(x.memo || {}), [r[0]]: !was } })); if (!was && memoDone + 1 === 114) this.celebrate('Tout le Coran appris !', "Tu as coché les 114 sourates. Qu'Allah accepte et garde le Coran dans ton cœur."); } }; });
     const revItems = revs.map(r => ({ title: r.title, boxBg: r.done ? G : 'transparent', boxBorder: r.done ? G : '#4a463d', check: r.done ? '✓' : '', deco: r.done ? 'line-through' : 'none', color: r.done ? '#8c8679' : '#EDE8DE',
       toggle: () => { const next = revs.map(x => x.id === r.id ? { ...x, done: !x.done } : x); this.setDay(revDay, c => ({ ...c, revisions: next })); if (!r.done && next.every(x => x.done)) this.celebrate('Révision du jour terminée', "Tout ce que tu devais réviser aujourd'hui est fait. Qu'Allah garde le Coran dans ton cœur."); },
       remove: () => this.setDay(revDay, c => ({ ...c, revisions: (c.revisions || []).filter(x => x.id !== r.id) })) }));
@@ -6887,6 +6905,7 @@ class Component extends DCLogic {
       onCourseTitle: this.draft('course', 'title'), onCourseStart: this.draft('course', 'start'), onCourseEnd: this.draft('course', 'end'),
       todos, noTodos: !todos.length, todoCount: tds.length ? tds.filter(x => x.done).length + '/' + tds.length + ' faits' : '', todoDraft: s.todoDraft,
       onTodo: e => this.setState({ todoDraft: e.target.value }), onTodoKey: e => { if (e.key === 'Enter') addTodo(); }, addTodo,
+      memoItems, memoLabel: memoDone + ' / 114', memoPct: (memoDone / 114 * 100) + '%',
       revItems, noRevs: !revs.length, revCount: revs.length ? revs.filter(x => x.done).length + '/' + revs.length + ' faites' : '', revDraft: s.revDraft, onRev: e => this.setState({ revDraft: e.target.value }), onRevKey: e => { if (e.key === 'Enter') addRev(); }, addRev,
       bonneDone: !!(d.bonneDone && d.bonne), bonneNotDone: !(d.bonneDone && d.bonne), bonneText: d.bonne, bonneDraft: s.bonneDraft,
       onBonneDraft: e => this.setState({ bonneDraft: e.target.value }), onBonneKey: e => { if (e.key === 'Enter') validateBonne(); }, validateBonne,
