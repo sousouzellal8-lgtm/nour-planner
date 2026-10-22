@@ -5711,8 +5711,19 @@ html[data-lite] body::after{display:none}
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;align-items:start">
     <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .6s ease .1s both">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Cette semaine</span><span style="font-family:Marcellus;font-size:22px;color:oklch(0.8 0.11 85)">{{ spWeekLabel }}</span></div>
-      <div style="height:6px;background:#1f1d18;border-radius:6px;overflow:hidden"><div style="height:100%;width:{{ spPct }};background:linear-gradient(90deg,oklch(0.8 0.11 190),oklch(0.8 0.11 85));transition:width .6s"></div></div>
+      <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Cette semaine</div>
+      <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap">
+        <div style="position:relative;width:132px;height:132px;border-radius:50%;background:conic-gradient(oklch(0.8 0.11 190) {{ spDeg }}, #1f1d18 0);display:flex;align-items:center;justify-content:center;transition:all .6s;box-shadow:0 0 40px oklch(0.8 0.11 190 / .12)">
+          <div style="width:112px;height:112px;border-radius:50%;background:#121214;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <span style="font-family:Marcellus;font-size:36px;line-height:1;color:#F3EEE3">{{ spDoneN }}<span style="font-size:18px;color:#7d776b"> / {{ spGoal }}</span></span>
+            <span style="font-size:11px;color:#7d776b;margin-top:4px">jours de sport</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:150px">
+          <span style="font-family:Marcellus;font-size:22px;color:oklch(0.8 0.11 85);line-height:1.25">{{ spMsg }}</span>
+          <span style="font-size:13px;color:#9A9488">{{ spWeekMinLabel }} cette semaine</span>
+        </div>
+      </div>
       <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
         <sc-for list="{{ spCells }}" as="c" hint-placeholder-count="7">
           <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
@@ -5730,7 +5741,11 @@ html[data-lite] body::after{display:none}
           <button onClick="{{ spGoalPlus }}" aria-label="Plus de jours" style="width:28px;height:28px;border-radius:50%;background:#18181b;border:1px solid rgba(255,255,255,.08);color:#EDE8DE;cursor:pointer">+</button>
         </div>
       </div>
-      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#9A9488"><span>Cette semaine : <strong style="color:oklch(0.8 0.11 190)">{{ spWeekMinLabel }}</strong></span><span>{{ spTotalLabel }}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+        <div style="padding:12px;border-radius:14px;background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:2px"><span style="font-family:Marcellus;font-size:22px;color:#F3EEE3">{{ spStreak }}</span><span style="font-size:11px;color:#7d776b">jours d'affilée</span></div>
+        <div style="padding:12px;border-radius:14px;background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:2px"><span style="font-family:Marcellus;font-size:22px;color:#F3EEE3">{{ spMonthN }}</span><span style="font-size:11px;color:#7d776b">séances ce mois</span></div>
+        <div style="padding:12px;border-radius:14px;background:rgba(255,255,255,.03);display:flex;flex-direction:column;gap:2px"><span style="font-family:Marcellus;font-size:22px;color:#F3EEE3">{{ spTotal }}</span><span style="font-size:11px;color:#7d776b">séances en tout</span></div>
+      </div>
     </div>
 
     <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .6s ease .2s both">
@@ -6890,7 +6905,12 @@ class Component extends DCLogic {
       if (before < spGoal && after >= spGoal) this.celebrate('Objectif de la semaine atteint', `${after} jours de sport cette semaine. Qu’Allah te garde fort et en bonne santé.`);
     };
     const spHist = [...sprt.log].sort((a, b) => (b.d < a.d ? -1 : b.d > a.d ? 1 : b.id - a.id)).slice(0, 40).map(e => { const dt = new Date(e.d + 'T12:00:00'); return { title: e.type, when: dt.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }), dur: spFmtMin(+e.min), note: e.note || '', hasNote: !!e.note, remove: () => { if (window.confirm('Supprimer cette séance ?')) setSp(cur => ({ log: cur.log.filter(x => x.id !== e.id) })); } }; });
+    const spDaysSet = new Set(sprt.log.map(e => e.d));
+    let spStreak = 0; { const dt = new Date(now); dt.setHours(12, 0, 0, 0); if (!spDaysSet.has(this.k(dt))) dt.setDate(dt.getDate() - 1); while (spDaysSet.has(this.k(dt))) { spStreak++; dt.setDate(dt.getDate() - 1); } }
+    const spMonthN = sprt.log.filter(e => e.d.slice(0, 7) === spToday.slice(0, 7)).length;
     const spv = {
+      spDeg: (Math.min(1, spDoneDays / spGoal) * 360).toFixed(1) + 'deg', spDoneN: spDoneDays, spStreak, spMonthN,
+      spMsg: spDoneDays >= spGoal ? 'Objectif atteint, Barak Allahu fik !' : spDoneDays === 0 ? 'Une séance aujourd’hui ? Bismillah.' : 'Encore ' + (spGoal - spDoneDays) + ' jour' + (spGoal - spDoneDays > 1 ? 's' : '') + ' pour ton objectif.',
       spWeekLabel: spDoneDays + ' / ' + spGoal + ' jour' + (spGoal > 1 ? 's' : ''), spPct: Math.min(100, spDoneDays / spGoal * 100) + '%', spCells,
       spGoal, spGoalMinus: () => setSp({ goal: Math.max(1, spGoal - 1) }), spGoalPlus: () => setSp({ goal: Math.min(7, spGoal + 1) }),
       spWeekMinLabel: spWeekMin ? spFmtMin(spWeekMin) : '0 min', spTotal: sprt.log.length, spTotalLabel: sprt.log.length + ' séance' + (sprt.log.length > 1 ? 's' : '') + ' au total',
