@@ -5208,11 +5208,6 @@ html[data-lite] body::after{display:none}
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
-        <button onClick="{{ toggleSport }}" style="text-align:left;background:{{ sportBg }};border:1px solid {{ sportBorder }};border-radius:20px;padding:20px;cursor:pointer;color:#EDE8DE;display:flex;flex-direction:column;gap:10px;transition:all .3s">
-          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Sport</span><span style="width:24px;height:24px;border-radius:7px;border:1.5px solid {{ sportBox }};background:{{ sportBoxBg }};color:#0A0A0B;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px">{{ sportCheck }}</span></div>
-          <div style="font-family:Marcellus;font-size:20px">{{ sportLabel }}</div>
-          <div style="font-size:12px;color:#8c8679">« Le croyant fort est meilleur et plus aimé d'Allah. » Muslim 2664</div>
-        </button>
         <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:22px;padding:20px;display:flex;flex-direction:column;gap:10px">
           <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Bonne action du jour</span>
           <sc-if value="{{ bonneDone }}" hint-placeholder-val="{{ false }}">
@@ -5703,6 +5698,80 @@ html[data-lite] body::after{display:none}
 
 </div>
 </sc-if>
+<sc-if value="{{ isSport }}" hint-placeholder-val="{{ false }}">
+<div style="animation:enter3d .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:50% 0">
+  <div style="position:relative;display:flex;flex-direction:column;gap:8px;margin-bottom:26px;animation:fadeUp .6s ease both">
+    <div aria-hidden="true" style="position:absolute;left:-40px;top:-30px;width:420px;height:220px;background:radial-gradient(closest-side,oklch(0.8 0.11 190 / .14),transparent);pointer-events:none"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:10px;color:oklch(0.8 0.11 190);font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600"><span style="width:28px;height:1px;background:oklch(0.8 0.11 190);transform-origin:left;animation:lineGrow .9s cubic-bezier(.2,.8,.2,1) .2s both"></span>08 · Sport</div>
+    <div style="position:relative;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <h1 style="margin:0;font-family:Marcellus;font-weight:400;font-size:clamp(32px,4.4vw,52px);background:linear-gradient(90deg,#F3EEE3 0%,#F3EEE3 35%,#F3E7C4 45%,oklch(0.8 0.11 85) 50%,#F3E7C4 55%,#F3EEE3 65%,#F3EEE3 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite;line-height:1.15">Mon sport</h1>
+      <span dir="rtl" style="font-family:Amiri;font-size:34px;color:oklch(0.8 0.11 85);text-shadow:0 0 26px oklch(0.8 0.11 85 / .45)">الرِّيَاضَةُ</span>
+    </div>
+    <div style="position:relative;font-size:15px;line-height:1.7;color:#A8A294;max-width:60ch">« Le croyant fort est meilleur et plus aimé d’Allah que le croyant faible. » Muslim 2664. Note tes séances et suis ton objectif de la semaine.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:20px;align-items:start">
+    <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .6s ease .1s both">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Cette semaine</span><span style="font-family:Marcellus;font-size:22px;color:oklch(0.8 0.11 85)">{{ spWeekLabel }}</span></div>
+      <div style="height:6px;background:#1f1d18;border-radius:6px;overflow:hidden"><div style="height:100%;width:{{ spPct }};background:linear-gradient(90deg,oklch(0.8 0.11 190),oklch(0.8 0.11 85));transition:width .6s"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+        <sc-for list="{{ spCells }}" as="c" hint-placeholder-count="7">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+            <span style="font-size:11px;color:#7d776b;text-transform:capitalize">{{ c.label }}</span>
+            <div style="width:100%;aspect-ratio:1;border-radius:10px;background:{{ c.bg }};border:1.5px solid {{ c.border }};color:{{ c.color }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{{ c.check }}</div>
+            <span style="font-size:11px;color:#6f6a60">{{ c.day }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:#9A9488">
+        <span>Objectif de la semaine</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button onClick="{{ spGoalMinus }}" aria-label="Moins de jours" style="width:28px;height:28px;border-radius:50%;background:#18181b;border:1px solid rgba(255,255,255,.08);color:#EDE8DE;cursor:pointer">−</button>
+          <span style="color:#F3EEE3;font-weight:600;min-width:74px;text-align:center">{{ spGoal }} jour(s)</span>
+          <button onClick="{{ spGoalPlus }}" aria-label="Plus de jours" style="width:28px;height:28px;border-radius:50%;background:#18181b;border:1px solid rgba(255,255,255,.08);color:#EDE8DE;cursor:pointer">+</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#9A9488"><span>Cette semaine : <strong style="color:oklch(0.8 0.11 190)">{{ spWeekMinLabel }}</strong></span><span>{{ spTotalLabel }}</span></div>
+    </div>
+
+    <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;animation:fadeUp .6s ease .2s both">
+      <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Ajouter une séance</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <sc-for list="{{ spTypeChips }}" as="t" hint-placeholder-count="8"><button onClick="{{ t.go }}" style="border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }}">{{ t.label }}</button></sc-for>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#9A9488">Durée
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input type="number" inputmode="numeric" min="1" max="600" value="{{ spMin }}" onChange="{{ onSpMin }}" onKeyDown="{{ onSpKey }}" placeholder="Minutes" style="width:110px;background:#0E0E10;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;color:#EDE8DE;font-size:14px;outline:none"></input>
+          <sc-for list="{{ spMinChips }}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{ m.go }}" style="border-radius:999px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;background:{{ m.bg }};color:{{ m.color }};border:1px solid {{ m.border }}">{{ m.label }}</button></sc-for>
+        </div>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#9A9488">Jour
+        <input type="date" value="{{ spDate }}" max="{{ spToday }}" onChange="{{ onSpDate }}" style="width:170px;background:#0E0E10;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;color:#EDE8DE;font-size:14px;outline:none;color-scheme:dark"></input>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#9A9488">Petite note (facultatif)
+        <input value="{{ spNote }}" onChange="{{ onSpNote }}" onKeyDown="{{ onSpKey }}" maxlength="200" placeholder="Ex. 5 km, jambes, avec un ami…" style="background:#0E0E10;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;color:#EDE8DE;font-size:14px;outline:none"></input>
+      </label>
+      <sc-if value="{{ hasSpErr }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:oklch(0.72 0.14 25)">{{ spErr }}</span></sc-if>
+      <button onClick="{{ spAdd }}" style="align-self:flex-start;background:oklch(0.8 0.11 85);color:#0A0A0B;border:none;border-radius:12px;padding:13px 24px;font-weight:700;font-size:15px;cursor:pointer">Enregistrer la séance</button>
+    </div>
+
+    <div style="grid-column:1/-1;background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;animation:fadeUp .6s ease .3s both">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9A9488;font-weight:600">Historique</span><span style="font-size:12px;color:#7d776b">{{ spShownLabel }}</span></div>
+      <sc-for list="{{ spHist }}" as="h" hint-placeholder-count="0">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#161618">
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+            <span style="font-size:15px;color:#EDE8DE">{{ h.title }} · {{ h.dur }}</span>
+            <span style="font-size:12px;color:#7d776b;text-transform:capitalize">{{ h.when }}</span>
+            <sc-if value="{{ h.hasNote }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#9A9488;overflow-wrap:anywhere">{{ h.note }}</span></sc-if>
+          </div>
+          <button onClick="{{ h.remove }}" aria-label="Supprimer la séance" style="background:none;border:none;color:#6f6a60;font-size:18px;cursor:pointer" style-hover="color:#EDE8DE">×</button>
+        </div>
+      </sc-for>
+      <sc-if value="{{ spEmpty }}" hint-placeholder-val="{{ true }}"><div style="font-size:14px;color:#6f6a60">Aucune séance pour l'instant : ajoute la première ci-dessus.</div></sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+
 <sc-if value="{{ isJournal }}" hint-placeholder-val="{{ false }}">
 <div style="animation:enter3d .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:50% 0">
   <div style="position:relative;display:flex;flex-direction:column;gap:8px;margin-bottom:26px;animation:fadeUp .6s ease both">
@@ -5860,7 +5929,7 @@ class Component extends DCLogic {
     { k: 'fajr', fr: 'Fajr', ar: 'الفجر' }, { k: 'dhuhr', fr: 'Dhuhr', ar: 'الظهر' },
     { k: 'asr', fr: 'Asr', ar: 'العصر' }, { k: 'maghrib', fr: 'Maghrib', ar: 'المغرب' }, { k: 'isha', fr: 'Isha', ar: 'العشاء' }
   ];
-  TABS = [['cal', 'Calendrier'], ['adhkar', 'Adhkar'], ['quran', 'Coran'], ['goals', 'Objectifs'], ['finance', 'Finances'], ['repas', 'Repas'], ['journal', 'Journal']];
+  TABS = [['cal', 'Calendrier'], ['adhkar', 'Adhkar'], ['quran', 'Coran'], ['goals', 'Objectifs'], ['finance', 'Finances'], ['repas', 'Repas'], ['journal', 'Journal'], ['sport', 'Sport']];
   ADHKAR = { matin: [], soir: [] }; // les adhkar viennent de nour-adhkar.js (liste vérifiée)
   TAFSIR = [
     { name: 'Al-Fâtiha', ar: 'الفاتحة', meta: 'Sourate 1 · 7 versets · Mecquoise', text: "L'Ouverture réunit le sens de tout le Coran. Les versets 1 à 4 louent Allah, Seigneur des mondes, le Tout Miséricordieux, Maître du Jour du Jugement. Le verset 5 est un engagement : « C'est Toi seul que nous adorons et de Toi seul que nous implorons l'aide. » Les versets 6 et 7 sont une invocation : être guidé sur le droit chemin, celui des gens comblés de bienfaits.", lesson: "Chaque prière commence par une demande de guidance — on en a besoin à chaque instant." },
@@ -5884,8 +5953,8 @@ class Component extends DCLogic {
     const now = new Date();
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(this.KEY)) || {}; } catch (e) {}
-    const data = Object.assign({ name: '', city: 'Paris', country: 'France', etudiant: false, courses: {}, mosque: '', reciter: 'ar.alafasy', hifdh: {}, disp: 'both', tafId: 90, fullRec: '123', days: {}, adhkar: {}, quran: { log: {}, goal: 5, page: 1, khatmas: 0, surah: '' }, goals: [], finance: {}, favRec: {}, journal: [], jBlur: false }, saved);
-    return { ...data, lic: this.gateOn() ? (window.NourLicence && window.NourLicence.stored() ? 'full' : 'none') : 'full', licOpen: false, hOpen: {}, licDraft: '', licMsg: '', licBusy: false, intro: (this.props || {}).showIntro ?? false, editName: false, tab: (this.gateOn() && !(window.NourLicence && window.NourLicence.stored())) ? 'adhkar' : ((this.props || {}).defaultTab || 'cal'), sel: this.k(now), vy: now.getFullYear(), vm: now.getMonth(), times: null, timesKey: '', tmap: this.loadTimesCache(), timesErr: false, dAdhkar: now.getHours() >= 15 ? 'soir' : 'matin', tafsir: 0, fm: this.k(now).slice(0, 7), cel: null, celClosed: 0, nameDraft: data.name, cityDraft: data.city, countryDraft: data.country, newItem: { time: '', title: '', type: 'cours' }, newGoal: { mois: '', annee: '' }, newInc: { label: '', amount: '' }, newExp: { label: '', amount: '', cat: 'Alimentation' }, todoDraft: '', revDraft: '', moyenCopie: '', bonneDraft: '', course: { title: '', start: '', end: '' }, mosqueDraft: data.mosque, rs: 1, rData: null, rLoading: false, rErr: false, rTaf: null, tafAll: false, tafOpen: {}, playing: -1, showFr: true, sSearch: '', recList: [], fpOpen: false, fpPlaying: false, fpT: 0, fpD: 0, fpMsg: '', fpSurah: 1, memoMode: false, repeat: 3, hideText: false, revealed: {}, devoirDraft: '', fin: { mode: '', amount: '', cat: '', note: '', err: false }, rcpCat: {}, rcpQ: '', rcpTag: '', rcpFavOnly: false, rcpOpen: '', rcpSrv: 0, rcpChk: {}, rcpDone: {}, journal: Array.isArray(data.journal) ? data.journal.filter(e => e && typeof e.text === 'string') : [], jBlur: !!data.jBlur, jDraft: (data.jDraft && typeof data.jDraft === 'object') ? { title: String(data.jDraft.title || ''), text: String(data.jDraft.text || ''), mood: String(data.jDraft.mood || '') } : { title: '', text: '', mood: '' }, jEditId: 0, jOpen: {}, jQ: '', jFlash: '' };
+    const data = Object.assign({ name: '', city: 'Paris', country: 'France', etudiant: false, courses: {}, mosque: '', reciter: 'ar.alafasy', hifdh: {}, disp: 'both', tafId: 90, fullRec: '123', days: {}, adhkar: {}, quran: { log: {}, goal: 5, page: 1, khatmas: 0, surah: '' }, goals: [], finance: {}, favRec: {}, journal: [], jBlur: false, sport: { goal: 3, log: [] } }, saved);
+    return { ...data, lic: this.gateOn() ? (window.NourLicence && window.NourLicence.stored() ? 'full' : 'none') : 'full', licOpen: false, hOpen: {}, licDraft: '', licMsg: '', licBusy: false, intro: (this.props || {}).showIntro ?? false, editName: false, tab: (this.gateOn() && !(window.NourLicence && window.NourLicence.stored())) ? 'adhkar' : ((this.props || {}).defaultTab || 'cal'), sel: this.k(now), vy: now.getFullYear(), vm: now.getMonth(), times: null, timesKey: '', tmap: this.loadTimesCache(), timesErr: false, dAdhkar: now.getHours() >= 15 ? 'soir' : 'matin', tafsir: 0, fm: this.k(now).slice(0, 7), cel: null, celClosed: 0, nameDraft: data.name, cityDraft: data.city, countryDraft: data.country, newItem: { time: '', title: '', type: 'cours' }, newGoal: { mois: '', annee: '' }, newInc: { label: '', amount: '' }, newExp: { label: '', amount: '', cat: 'Alimentation' }, todoDraft: '', revDraft: '', moyenCopie: '', bonneDraft: '', course: { title: '', start: '', end: '' }, mosqueDraft: data.mosque, rs: 1, rData: null, rLoading: false, rErr: false, rTaf: null, tafAll: false, tafOpen: {}, playing: -1, showFr: true, sSearch: '', recList: [], fpOpen: false, fpPlaying: false, fpT: 0, fpD: 0, fpMsg: '', fpSurah: 1, memoMode: false, repeat: 3, hideText: false, revealed: {}, devoirDraft: '', fin: { mode: '', amount: '', cat: '', note: '', err: false }, rcpCat: {}, rcpQ: '', rcpTag: '', rcpFavOnly: false, rcpOpen: '', rcpSrv: 0, rcpChk: {}, rcpDone: {}, journal: Array.isArray(data.journal) ? data.journal.filter(e => e && typeof e.text === 'string') : [], jBlur: !!data.jBlur, jDraft: (data.jDraft && typeof data.jDraft === 'object') ? { title: String(data.jDraft.title || ''), text: String(data.jDraft.text || ''), mood: String(data.jDraft.mood || '') } : { title: '', text: '', mood: '' }, jEditId: 0, jOpen: {}, jQ: '', jFlash: '', sport: (data.sport && Array.isArray(data.sport.log)) ? { goal: Math.min(7, Math.max(1, +data.sport.goal || 3)), log: data.sport.log.filter(e => e && typeof e.d === 'string' && +e.min > 0) } : { goal: 3, log: [] }, spDraft: { type: 'Marche', min: '', note: '', date: '' }, spErr: '' };
   }
 
   // ───── Effets 3D & finitions : ciel étoilé, cartes à reflet, parallaxe, ondulations ─────
@@ -6182,8 +6251,8 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { if (this._fxOff) this._fxOff(); document.removeEventListener('pointerdown', this._celDown, true); document.removeEventListener('keydown', this._celKey, true); document.removeEventListener('visibilitychange', this._vis); document.removeEventListener('error', this._imgErr, true); if (this._moreIO) this._moreIO.disconnect(); if (this._full) this._full.pause(); clearInterval(this._tick); clearInterval(this._cd); clearInterval(this._dp); clearTimeout(this._ct); clearTimeout(this._jt); if (this._audio) this._audio.pause(); }
   componentDidUpdate(pp, ps) {
-    const { name, city, country, days, adhkar, quran, goals, finance, etudiant, courses, mosque, reciter, hifdh, disp, tafId, fullRec, favRec, journal, jBlur, jDraft } = this.state;
-    try { localStorage.setItem(this.KEY, JSON.stringify({ name, city, country, days, adhkar, quran, goals, finance, etudiant, courses, mosque, reciter, hifdh, disp, tafId, fullRec, favRec, journal, jBlur, jDraft })); } catch (e) {}
+    const { name, city, country, days, adhkar, quran, goals, finance, etudiant, courses, mosque, reciter, hifdh, disp, tafId, fullRec, favRec, journal, jBlur, jDraft, sport } = this.state;
+    try { localStorage.setItem(this.KEY, JSON.stringify({ name, city, country, days, adhkar, quran, goals, finance, etudiant, courses, mosque, reciter, hifdh, disp, tafId, fullRec, favRec, journal, jBlur, jDraft, sport })); } catch (e) {}
     this.ensureTimes();
     this.tickCount();
     this.watchMore();
@@ -6262,7 +6331,7 @@ class Component extends DCLogic {
   setQ(patch) { this.setState(s => ({ quran: { ...s.quran, ...(typeof patch === 'function' ? patch(s.quran) : patch) } })); }
   draft(group, field) { return e => { const v = e.target.value; this.setState(s => ({ [group]: { ...s[group], [field]: v } })); }; }
 
-  SAVE_KEYS = ['name', 'city', 'country', 'days', 'adhkar', 'quran', 'goals', 'finance', 'etudiant', 'courses', 'mosque', 'reciter', 'hifdh', 'disp', 'tafId', 'fullRec', 'favRec', 'journal'];
+  SAVE_KEYS = ['name', 'city', 'country', 'days', 'adhkar', 'quran', 'goals', 'finance', 'etudiant', 'courses', 'mosque', 'reciter', 'hifdh', 'disp', 'tafId', 'fullRec', 'favRec', 'journal', 'sport'];
 
 
   // ───── Recettes : rubrique « Repas » ─────
@@ -6439,6 +6508,7 @@ class Component extends DCLogic {
         if ('goals' in patch && !Array.isArray(patch.goals)) delete patch.goals;
         if ('journal' in patch) { if (!Array.isArray(patch.journal)) delete patch.journal; else patch.journal = patch.journal.filter(e => e && typeof e.text === 'string' && e.text.trim()).map((e, i) => ({ id: +e.id || +e.t || Date.now() + i, t: +e.t || +e.id || Date.now() + i, title: String(e.title || '').slice(0, 120), text: String(e.text).slice(0, 20000), mood: String(e.mood || '') })); }
         ['name', 'city', 'country', 'mosque', 'reciter', 'disp', 'fullRec'].forEach(k => { if (k in patch && typeof patch[k] !== 'string') delete patch[k]; });
+        if ('sport' in patch) { if (!isObj(patch.sport) || !Array.isArray(patch.sport.log)) delete patch.sport; else patch.sport = { goal: Math.min(7, Math.max(1, +patch.sport.goal || 3)), log: patch.sport.log.filter(e => e && /^\d{4}-\d{2}-\d{2}$/.test(String(e.d)) && +e.min > 0).map((e, i) => ({ id: +e.id || Date.now() + i, d: String(e.d), type: String(e.type || 'Autre').slice(0, 30), min: Math.min(600, Math.round(+e.min)), note: String(e.note || '').slice(0, 200) })) }; }
         if ('etudiant' in patch) patch.etudiant = !!patch.etudiant;
         if ('quran' in patch) {
           if (!isObj(patch.quran)) delete patch.quran;
@@ -6792,6 +6862,42 @@ class Component extends DCLogic {
         copyLabel: s.moyenCopie === nom ? 'Copié ✓' : 'Copier',
         copy: () => { const done = () => { this.setState({ moyenCopie: nom }); setTimeout(() => this.setState({ moyenCopie: '' }), 2000); }; try { navigator.clipboard.writeText(detail).then(done, () => {}); } catch (e) {} } };
     });
+    // ───── Sport : séances et objectif de la semaine ─────
+    const SP_TYPES = ['Marche', 'Course', 'Musculation', 'Natation', 'Vélo', 'Foot', 'Yoga', 'Autre'];
+    const sprt = (s.sport && Array.isArray(s.sport.log)) ? s.sport : { goal: 3, log: [] };
+    const spGoal = Math.min(7, Math.max(1, +sprt.goal || 3));
+    const spd = s.spDraft || { type: 'Marche', min: '', note: '', date: '' };
+    const spToday = this.k(now), spDate = spd.date || spToday;
+    const setSp = patch => this.setState(st => ({ sport: { ...((st.sport && Array.isArray(st.sport.log)) ? st.sport : { goal: 3, log: [] }), ...(typeof patch === 'function' ? patch((st.sport && Array.isArray(st.sport.log)) ? st.sport : { goal: 3, log: [] }) : patch) } }));
+    const setSpd = patch => this.setState(st => ({ spDraft: { ...(st.spDraft || { type: 'Marche', min: '', note: '', date: '' }), ...patch }, spErr: '' }));
+    const spWk = new Date(now); spWk.setHours(0, 0, 0, 0); spWk.setDate(spWk.getDate() - ((spWk.getDay() + 6) % 7));
+    const spDays = Array.from({ length: 7 }, (_, i) => { const dt = new Date(spWk); dt.setDate(spWk.getDate() + i); const key = this.k(dt); return { dt, key, list: sprt.log.filter(e => e.d === key) }; });
+    const spDoneDays = spDays.filter(x => x.list.length).length;
+    const spWeekMin = spDays.reduce((a, x) => a + x.list.reduce((b, e) => b + (+e.min || 0), 0), 0);
+    const spFmtMin = m => m >= 60 ? Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + this.pad(m % 60) : '') : m + ' min';
+    const spCells = spDays.map(x => { const done = x.list.length > 0, tod = x.key === spToday; return { label: x.dt.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '').slice(0, 3), day: x.dt.getDate(), check: done ? '✓' : '', bg: done ? T : '#161618', color: done ? '#0A0A0B' : '#9A9488', border: tod ? G : (done ? T : 'rgba(255,255,255,.06)') }; });
+    const spTypeChips = SP_TYPES.map(t => { const on = spd.type === t; return { label: t, bg: on ? G : '#18181b', color: on ? '#0A0A0B' : '#C9C3B6', border: on ? G : 'rgba(255,255,255,.08)', go: () => setSpd({ type: t }) }; });
+    const spMinChips = [15, 30, 45, 60].map(m => { const on = String(spd.min) === String(m); return { label: m + ' min', bg: on ? 'oklch(0.8 0.11 85 / .14)' : '#18181b', color: on ? G : '#C9C3B6', border: on ? 'oklch(0.8 0.11 85 / .5)' : 'rgba(255,255,255,.08)', go: () => setSpd({ min: String(m) }) }; });
+    const spAdd = () => {
+      const min = Math.round(+spd.min);
+      if (!(min >= 1 && min <= 600)) { this.setState({ spErr: 'Indique la durée de ta séance, entre 1 et 600 minutes.' }); return; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(spDate) || spDate > spToday) { this.setState({ spErr: 'Choisis une date qui n’est pas dans le futur.' }); return; }
+      const before = new Set(sprt.log.filter(e => spDays.some(x => x.key === e.d)).map(e => e.d)).size;
+      const inWeek = spDays.some(x => x.key === spDate);
+      const after = inWeek ? new Set([...sprt.log.filter(e => spDays.some(x => x.key === e.d)).map(e => e.d), spDate]).size : before;
+      setSp(cur => ({ log: [...cur.log, { id: Date.now(), d: spDate, type: spd.type || 'Autre', min, note: String(spd.note || '').trim().slice(0, 200) }] }));
+      this.setState({ spDraft: { type: spd.type, min: '', note: '', date: '' }, spErr: '' });
+      if (before < spGoal && after >= spGoal) this.celebrate('Objectif de la semaine atteint', `${after} jours de sport cette semaine. Qu’Allah te garde fort et en bonne santé.`);
+    };
+    const spHist = [...sprt.log].sort((a, b) => (b.d < a.d ? -1 : b.d > a.d ? 1 : b.id - a.id)).slice(0, 40).map(e => { const dt = new Date(e.d + 'T12:00:00'); return { title: e.type, when: dt.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }), dur: spFmtMin(+e.min), note: e.note || '', hasNote: !!e.note, remove: () => { if (window.confirm('Supprimer cette séance ?')) setSp(cur => ({ log: cur.log.filter(x => x.id !== e.id) })); } }; });
+    const spv = {
+      spWeekLabel: spDoneDays + ' / ' + spGoal + ' jour' + (spGoal > 1 ? 's' : ''), spPct: Math.min(100, spDoneDays / spGoal * 100) + '%', spCells,
+      spGoal, spGoalMinus: () => setSp({ goal: Math.max(1, spGoal - 1) }), spGoalPlus: () => setSp({ goal: Math.min(7, spGoal + 1) }),
+      spWeekMinLabel: spWeekMin ? spFmtMin(spWeekMin) : '0 min', spTotal: sprt.log.length, spTotalLabel: sprt.log.length + ' séance' + (sprt.log.length > 1 ? 's' : '') + ' au total',
+      spTypeChips, spMinChips, spMin: spd.min, onSpMin: e => setSpd({ min: e.target.value }), spNote: spd.note, onSpNote: e => setSpd({ note: e.target.value }),
+      spDate, spToday, onSpDate: e => setSpd({ date: e.target.value }), spAdd, onSpKey: e => { if (e.key === 'Enter') spAdd(); },
+      spErr: s.spErr || '', hasSpErr: !!s.spErr, spHist, spEmpty: !spHist.length, spShownLabel: sprt.log.length > 40 ? '40 dernières séances' : ''
+    };
     // ───── Journal : notes personnelles (gardées sur l'appareil) ─────
     const J_MOODS = [['reconnaissant', 'Reconnaissant', 'oklch(0.8 0.11 85)'], ['paisible', 'Paisible', 'oklch(0.8 0.11 190)'], ['motive', 'Motivé', '#9BD38B'], ['fatigue', 'Fatigué', '#B9A8E0'], ['inquiet', 'Inquiet', '#E8A878'], ['triste', 'Triste', '#86AEDB']];
     const J_STARTERS = ['Aujourd’hui, je remercie Allah pour…', 'Ce qui me pèse en ce moment…', 'Une invocation que je veux faire…', 'Ce que j’ai appris aujourd’hui…', 'Une chose dont je suis fier(ère)…', 'Une chose que je veux laisser derrière moi…'];
@@ -6838,7 +6944,7 @@ class Component extends DCLogic {
       enter, closeIntro: () => this.setState({ intro: false, editName: false }), editName: () => this.setState({ editName: true }), openIntro: () => this.setState({ intro: true, editName: false, nameDraft: s.name }),
       displayName: s.name || 'toi', hijriToday: this.hijri(now) + (this.isWhite(now) ? ' \u00b7 jour blanc' : ''),
       exportData: () => this.exportData(), importData: e => this.importData(e), restoreClick: () => { const el = document.getElementById('nour-import'); if (el) el.click(); },
-      tabs, isCal: visTab === 'cal', isAdhkar: visTab === 'adhkar', isQuran: visTab === 'quran', isGoals: visTab === 'goals', isFinance: visTab === 'finance', isRec: !!rcRub, ...rcv, isJournal: visTab === 'journal', ...jv,
+      tabs, isCal: visTab === 'cal', isAdhkar: visTab === 'adhkar', isQuran: visTab === 'quran', isGoals: visTab === 'goals', isFinance: visTab === 'finance', isRec: !!rcRub, ...rcv, isJournal: visTab === 'journal', ...jv, isSport: visTab === 'sport', ...spv,
       gateOn: gate, isFull: licensed, notFull: !licensed, tabLocked, licIntro,
       buyUrl: CFG.lienAchat || '#', paypalUrl: CFG.lienPaypal || '#', hasPaypal: /^https:\/\/(www\.)?paypal\.(me|com)\//i.test(CFG.lienPaypal || ''), moyens: moyensListe, hasMoyens: moyensListe.length > 0, moyensNote, buyClick: e => { const u = CFG.lienAchat || ''; if (!/^https:\/\//i.test(u) || /exemple\.com|example\.com|remplace-moi|ton-site/i.test(u)) { if (e && e.preventDefault) e.preventDefault(); this.setState({ licOpen: true, licMsg: 'Le paiement n’est pas encore relié : dans config.js, remplace la valeur de lienAchat par ton lien de paiement.' }); } }, price: CFG.prix || '', contactMail: CFG.email || '',
       licState: licensed ? 'on' : 'off', licPill: licensed ? 'Licence active' : 'Acheter', licPillBg: licensed ? 'oklch(0.8 0.11 190 / .08)' : 'oklch(0.8 0.11 85)', licPillColor: licensed ? 'oklch(0.8 0.11 190)' : '#0A0A0B', licPillBd: licensed ? 'oklch(0.8 0.11 190 / .35)' : 'oklch(0.8 0.11 85)',
@@ -6866,8 +6972,6 @@ class Component extends DCLogic {
       newItem: s.newItem, onItemTime: this.draft('newItem', 'time'), onItemTitle: this.draft('newItem', 'title'), onItemKey: e => { if (e.key === 'Enter') addItem(); }, addItem,
       setCours: () => this.setState(st => ({ newItem: { ...st.newItem, type: 'cours' } })), setTache: () => this.setState(st => ({ newItem: { ...st.newItem, type: 'tache' } })),
       coursBg: isCours ? T : 'transparent', coursColor: isCours ? '#0A0A0B' : '#9A9488', tacheBg: !isCours ? G : 'transparent', tacheColor: !isCours ? '#0A0A0B' : '#9A9488',
-      toggleSport: () => this.setDay(s.sel, c => ({ ...c, sport: !c.sport })),
-      sportBg: d.sport ? 'oklch(0.8 0.11 190 / .08)' : '#121214', sportBorder: d.sport ? 'oklch(0.8 0.11 190 / .5)' : 'rgba(216,178,90,.14)', sportBox: d.sport ? T : '#4a463d', sportBoxBg: d.sport ? T : 'transparent', sportCheck: d.sport ? '✓' : '', sportLabel: d.sport ? 'Séance faite, bravo' : 'Séance de sport',
       bonne: d.bonne, onBonne: e => { const v = e.target.value; this.setDay(s.sel, { bonne: v }); }, goodIdea, useIdea: () => this.setState({ bonneDraft: goodIdea }),
       connexion: d.connexion, onConnexion: e => { const v = e.target.value; this.setDay(s.sel, { connexion: v }); },
 
