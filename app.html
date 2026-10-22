@@ -5406,10 +5406,6 @@ html[data-lite] body::after{display:none}
       <span style="font-family:Amiri;font-size:30px;color:oklch(0.8 0.11 85)">أَهْدَافِي</span>
     </div>
   </div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;animation:fadeUp .6s ease .05s both">
-    <span style="font-size:13px;color:#8c8679;align-self:center">Idées :</span>
-    <sc-for list="{{ goalIdeas }}" as="g" hint-placeholder-count="4"><button onClick="{{ g.use }}" style="background:#121214;border:1px dashed oklch(0.8 0.11 85 / .35);color:#C9C3B6;border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer" style-hover="border-color:oklch(0.8 0.11 85);color:#F3EEE3">+ {{ g.t }}</button></sc-for>
-  </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:20px;align-items:start">
     <sc-for list="{{ goalCols }}" as="col" hint-placeholder-count="2">
       <div style="background:#121214;border:1px solid rgba(216,178,90,.14);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;animation:fadeUp .6s ease .1s both">
@@ -5954,7 +5950,7 @@ class Component extends DCLogic {
     { name: 'Al-Kawthar', ar: 'الكوثر', meta: 'Sourate 108 · 3 versets · Mecquoise', text: "La plus courte sourate du Coran. Al-Kawthar est un fleuve du Paradis promis au Prophète ﷺ (Muslim 400). En retour, Allah lui ordonne la prière et le sacrifice par gratitude, et annonce que c'est son détracteur qui sera privé de toute postérité.", lesson: "Répondre aux bienfaits d'Allah par la prière et la gratitude." }
   ];
   GOOD = ["Sourire à quelqu'un", 'Appeler un parent', 'Donner une sadaqa, même petite', "Aider à la maison sans qu'on te le demande", 'Rendre visite à un malade', 'Retirer un obstacle du chemin', 'Partager un rappel utile', 'Pardonner à quelqu\'un', 'Offrir à manger', 'Faire une dua pour un ami absent'];
-  GOAL_IDEAS = ['Prier Fajr à l\'heure 30 jours', 'Mémoriser sourate Al-Mulk', 'Jeûner lundi et jeudi', 'Lire le Coran en entier', 'Apprendre les 99 noms d\'Allah'];
+  GOAL_IDEAS = [];
   CATS = ['Alimentation', 'Logement', 'Transport', 'Factures', 'Études', 'Vêtements', 'Loisirs', 'Sadaqa', 'Autre'];
   INC_CATS = ['Salaire', 'Bourse', 'Aides / CAF', 'Vente', 'Cadeau', 'Autre'];
   RECITERS = [['ar.alafasy', 'Mishary Al-‘Afâsî'], ['ar.abdurrahmaansudais', '‘Abd ar-Rahmân As-Sudays'], ['ar.saoodshuraym', 'Su‘ûd Ash-Shuraym'], ['ar.mahermuaiqly', 'Mâhir Al-Mu‘ayqlî'], ['ar.abdulsamad', '‘Abd al-Bâsit ‘Abd as-Samad'], ['ar.husary', 'Mahmûd Khalîl Al-Husarî'], ['ar.shaatree', 'Abû Bakr Ash-Shâtirî'], ['ar.ahmedajamy', 'Ahmad Al-‘Ajamî'], ['ar.hudhaify', '‘Alî Al-Hudhayfî'], ['ar.muhammadayyoub', 'Muhammad Ayyûb'], ['ar.muhammadjibreel', 'Muhammad Jibrîl'], ['ar.abdullahbasfar', '‘Abdullah Basfar'], ['ar.hanirifai', 'Hânî Ar-Rifâ‘î']];
